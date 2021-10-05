@@ -57,75 +57,76 @@ dat$year <- year(dat$DATE) ## NOTE: 'DATE' is in IDate format
 dat[, .N, year]
 print(setorder(dat[, .N, by = year], year))
 
-# ## >> Find records without year information
-# range(dat$DATE, na.rm = TRUE)
-# plot(dat[!is.na(year)][, .N, year], xaxp = c(1761, 2021, 10), pch = 20)
-# 
-# message(cat("Number of records with year = NA: "),
-#         sum(is.na(dat$year))); sum(is.na(dat$year))/nrow(dat)
-# 
-# message(cat("Number of records with year < 1990: "),
-#         nrow(dat[year < 1990])); nrow(dat[year < 1990])/nrow(dat)
-# 
-# message(cat("Number of records with year as NA or < 1990: "),
-#         nrow(dat[is.na(year) | year < 1990])); nrow(dat[is.na(year) | year < 1990])/nrow(dat)
-# 
-# message(cat("Number of records with year >= 1990: "),
-#         nrow(dat[year >= 1990])); nrow(dat[year >= 1990])/nrow(dat)
-# 
-# length(unique(dat$SPECIES))
-# 
-# ## >> Number of records lost with year-filter
-# t1 <- dat[, .N, SPECIES]
-# t2 <- dat[!is.na(year) & year >= 1990][, .N, SPECIES]
-# t <- merge(t1, t2, by = "SPECIES", all.x = TRUE)
-# dim(t)
-# names(t)[2:3] <- c("n.all", "n.sub")
-# t[which(is.na(n.sub))]$n.sub = 0
-# sum(is.na(t$n.sub))
-# setorder(t, n.sub)
-# # t$p.lost <- (t$n.all - t$n.sub)/t$n.all
-# 
-# message(cat("Total number of species in data:"),
-#         nrow(t))
-# message(cat("Number of species with < 3 records prior to applying year filter: "),
-#         nrow(t[n.all < 3])); nrow(t[n.all < 3])/nrow(t)
-# message(cat("Number of species with >= 3 records prior to applying year filter: "),
-#         nrow(t[n.all >= 3])); nrow(t[n.all >= 3])/nrow(t)
-# 
-# message(cat("Number of species with < 3 records after filter for 1990 and NAs: "),
-#         nrow(t[n.sub < 3])); nrow(t[n.sub < 3])/nrow(t)
-# message(cat("Number of species with >= 3 records after filter for 1990 and NAs: "),
-#         nrow(t[n.sub >= 3])); nrow(t[n.sub >= 3])/nrow(t)
-# message(cat("Number of species with < 3 records after filter that had >=3 records before filter: "),
-#         nrow(t[n.sub < 3 & n.all >=3]))
-# 
-# ## >> Remove records based on year-filter rule: 
-# ##  if >= 3 records after filter, remove NA and <1990
-# ##  if < 3 records after filter, keep NA and <1990
-# sp_applyfilter <- t[n.sub >= 3]$SPECIES
-# length(sp_applyfilter)
-# 
-# dim(dat)
-# dat0 <- dat[SPECIES %in% sp_applyfilter][!is.na(year) & year >= 1990]
-# dat1 <- dat[!(SPECIES %in% sp_applyfilter)]
-# 
-# ## Checks
-# sum(dat0[, .N, SPECIES]$N < 3)
-# dim(dat0)[1] + dim(dat1)[1]
-# length(unique(dat0$SPECIES)) + 
-#   length(unique(dat1$SPECIES)) == length(unique(dat$SPECIES))
-# 
-# n <- dim(dat)[1]
-# dat <- rbind(dat0, dat1)
-# points(dat[!is.na(year)][, .N, year], xaxp = c(1761, 2021, 10), pch = 20, col = "tomato3")
-# 
-# message(cat("Number of records lost with year-filer: "),
-#         n-dim(dat)[1])
-# message(cat("Proportion of data lost with year-filer: "),
-#         (n-dim(dat)[1])/n)
-# message(cat("Number of unique species in data: "),
-#         length(unique(dat$SPECIES)))
+  # ## >> Find records without year information
+  # range(dat$DATE, na.rm = TRUE)
+  # plot(dat[!is.na(year) & year != 0][, .N, year], xaxp = c(1761, 2021, 10), pch = 20)
+  # range(dat[year !=0]$year, na.rm = TRUE)
+  # 
+  # message(cat("Number of records with year = NA: "),
+  #         sum(is.na(dat$year))); sum(is.na(dat$year))/nrow(dat)
+  # 
+  # message(cat("Number of records with year < 1990: "),
+  #         nrow(dat[year < 1990])); nrow(dat[year < 1990])/nrow(dat)
+  # 
+  # message(cat("Number of records with year as NA or < 1990: "),
+  #         nrow(dat[is.na(year) | year < 1990])); nrow(dat[is.na(year) | year < 1990])/nrow(dat)
+  # 
+  # message(cat("Number of records with year >= 1990: "),
+  #         nrow(dat[year >= 1990])); nrow(dat[year >= 1990])/nrow(dat)
+  # 
+  # length(unique(dat$SPECIES))
+  # 
+  # ## >> Number of records lost with year-filter
+  # t1 <- dat[, .N, SPECIES]
+  # t2 <- dat[!is.na(year) & year >= 1990][, .N, SPECIES]
+  # t <- merge(t1, t2, by = "SPECIES", all.x = TRUE)
+  # dim(t)
+  # names(t)[2:3] <- c("n.all", "n.sub")
+  # t[which(is.na(n.sub))]$n.sub = 0
+  # sum(is.na(t$n.sub))
+  # setorder(t, n.sub)
+  # # t$p.lost <- (t$n.all - t$n.sub)/t$n.all
+  # 
+  # message(cat("Total number of species in data: "),
+  #         nrow(t))
+  # message(cat("Number of species with < 3 records prior to applying year filter: "),
+  #         nrow(t[n.all < 3])); nrow(t[n.all < 3])/nrow(t)
+  # message(cat("Number of species with >= 3 records prior to applying year filter: "),
+  #         nrow(t[n.all >= 3])); nrow(t[n.all >= 3])/nrow(t)
+  # 
+  # message(cat("Number of species with < 3 records after filter for 1990 and NAs: "),
+  #         nrow(t[n.sub < 3])); nrow(t[n.sub < 3])/nrow(t)
+  # message(cat("Number of species with >= 3 records after filter for 1990 and NAs: "),
+  #         nrow(t[n.sub >= 3])); nrow(t[n.sub >= 3])/nrow(t)
+  # message(cat("Number of species with < 3 records after filter that had >=3 records before filter: "),
+  #         nrow(t[n.sub < 3 & n.all >=3]))
+  # 
+  # ## >> Remove records based on year-filter rule:
+  # ##  if >= 3 records after filter, remove NA and <1990
+  # ##  if < 3 records after filter, keep NA and <1990
+  # sp_applyfilter <- t[n.sub >= 3]$SPECIES
+  # length(sp_applyfilter)
+  # 
+  # dim(dat)
+  # dat0 <- dat[SPECIES %in% sp_applyfilter][!is.na(year) & year >= 1990]
+  # dat1 <- dat[!(SPECIES %in% sp_applyfilter)]
+  # 
+  # ## Checks
+  # sum(dat0[, .N, SPECIES]$N < 3)
+  # dim(dat0)[1] + dim(dat1)[1]
+  # length(unique(dat0$SPECIES)) +
+  #   length(unique(dat1$SPECIES)) == length(unique(dat$SPECIES))
+  # 
+  # n <- dim(dat)[1]
+  # dat <- rbind(dat0, dat1)
+  # points(dat[!is.na(year)][, .N, year], xaxp = c(1761, 2021, 10), pch = 20, col = "tomato3")
+  # 
+  # message(cat("Number of records lost with year-filer: "),
+  #         n-dim(dat)[1])
+  # message(cat("Proportion of data lost with year-filer: "),
+  #         (n-dim(dat)[1])/n)
+  # message(cat("Number of unique species in data: "),
+  #         length(unique(dat$SPECIES)))
 
 
 
@@ -136,6 +137,7 @@ tail(sort(unique(dat$POSITIONAL.ACCURACY)))
 
 hist(dat$POSITIONAL.ACCURACY, prob = TRUE)
 plot(density(dat$POSITIONAL.ACCURACY, na.rm = TRUE, bw = 10))
+plot(density(dat[POSITIONAL.ACCURACY <=10000]$POSITIONAL.ACCURACY, na.rm = TRUE, bw = 10))
 
 ## Filter if recorded accuracy is > 5k
 message(cat("Proportion of records with POSITIONAL.ACCURACY recorded as > 5k: "),
@@ -198,9 +200,15 @@ message(cat("Number of unique spfile in new dataset: "),
         length(unique(dat$spfile)))
 dat[,new_id := NULL]
 
+message(cat("Number of records in new dataset: "),
+        nrow(dat))
 
 
-## Save as rds file
+## Save dataset ####
+write.csv(dat, file = file.path(output_dir, "fungi_data.csv"),
+          row.names = FALSE)
+
+
 ## Save rds files for species ####
 save_spdata2 <- function(species_uid, data, data_dir){
   
