@@ -144,6 +144,7 @@ message(cat("Proportion of records with POSITIONAL.ACCURACY recorded as > 5k: ")
         nrow(dat[POSITIONAL.ACCURACY > 5000])/nrow(dat)); nrow(dat[POSITIONAL.ACCURACY > 5000])
 
 dat <- dat[POSITIONAL.ACCURACY <= 5000 | is.na(POSITIONAL.ACCURACY)]; dim(dat)
+dat0 <- dat[POSITIONAL.ACCURACY > 5000]; dim(dat0)
 
 ## Check
 nrow(dat_all) - nrow(dat_all[POSITIONAL.ACCURACY > 5000]) == nrow(dat)
@@ -157,7 +158,8 @@ dat[, .N, OUTLIER.STATUS]
 message(cat("Number of records labelled as outliers: "),
         sum(dat[, .N, OUTLIER.STATUS][OUTLIER.STATUS != "NONE"]$N))
 
-
+write.csv(dat0, file = file.path(output_dir, "fungi_data_geouncertain.csv"),
+          row.names = FALSE)
 
 
 
