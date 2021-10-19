@@ -230,7 +230,7 @@ save_spdata2 <- function(species_uid, data, data_dir){
 errorlog <- paste0(output_dir, "/errorlog_rdsdata_", gsub("-", "", Sys.Date()), ".txt")
 writeLines(c(""), errorlog)
 
-# data <- fread(file.path(output_dir, "data_ALAnonALA_wgs84_corrected.csv"))
+# data <- fread(file.path(output_dir, "fungi_data.csv"))
 dat <- dat
 all_species <- unique(dat$spfile)
 

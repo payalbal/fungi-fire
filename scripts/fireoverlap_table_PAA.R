@@ -85,9 +85,10 @@ write.csv(out, file = file.path(output_dir, paste0("fungi_overlap_", Sys.Date(),
 
 
 ## Checks ####
+out <- fread(file.path(output_dir, "fungi_overlap_2021-10-12.csv"))
+
 ## >> Check that species with and without polygons add up to total species  ####
 sum(is.na(out$Species_Polygon)) + sum(!is.na(out$Species_Polygon)) == nrow(out)
-
 
 ## Check that unique occurrence points < total occurrence points
 all(out$Nbe_unique_occ <= out$Occurrence_Points)
@@ -119,10 +120,12 @@ all(out[paa_points == 0 & !is.na(Total_fire_polygon)]$Species_Polygon != 0)
 
 
 ## >> Check if polygon fire overlap < species polygon clipped to PAA ####
-## Area of polygon fire overlap will always be LESS THAN area of species polygon clipped to PAA
+## Area of polygon fire overlap will always be LESS THAN OR EQUAL TO area of species polygon clipped to PAA
 ## All TRUE
-all(out[!is.na(Species_Polygon)]$Total_fire_polygon < out[!is.na(Species_Polygon)]$Species_Polygon)
-
+all(out[!is.na(Species_Polygon)]$Total_fire_polygon <= out[!is.na(Species_Polygon)]$Species_Polygon)
+out[!is.na(Species_Polygon) & Total_fire_polygon == Species_Polygon]
+summary(out$Overlap_Polygons_Fire2345_GEEBAM2_as_burnt)
+summary(out$Total_fire_polygon)
 
 ## >> Check if Species_Polygon (raster) > EOO (shapefile) ####
 ## Area of species polygon raster clipped to PAA compared to area of species polygon shapefile from ConR
